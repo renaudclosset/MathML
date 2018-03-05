@@ -8,8 +8,6 @@
       "email": "renaud@mercurysolutions.be"
     }
   ],
-  "license": "proprietary",
-  "type": "project",
   "require": {
     "php": ">=7.1"
   },
