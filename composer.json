@@ -1,0 +1,24 @@
+{
+  "name": "mercurysolutions/phpmathml",
+  "description": "A PHP MathML",
+  "keywords": ["MathML"],
+  "authors": [
+    {
+      "name": "Renaud Closset",
+      "email": "renaud@mercurysolutions.be"
+    }
+  ],
+  "license": "proprietary",
+  "type": "project",
+  "require": {
+    "php": ">=7.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "MercurySolutions\\": "src/"
+    }
+  }
+}
