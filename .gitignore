@@ -1,3 +1,5 @@
 vendor/
-cc/
+build/
 .idea/
+composer.lock
+phpunit.xml
