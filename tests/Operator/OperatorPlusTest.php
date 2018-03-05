@@ -2,27 +2,12 @@
 
 namespace Operator;
 
-use MercurySolutions\MathML\MathML;
-use PHPUnit\Framework\TestCase;
-
 /**
  * Class OperatorPlusTest
  * @package Operator
  */
-class OperatorPlusTest extends TestCase
+class OperatorPlusTest extends AbstractOperatorTest
 {
-    /**
-     * @param $xml
-     * @param $parameters
-     * @return float
-     * @throws \Exception
-     */
-    protected function executeCalculation($xml, $parameters)
-    {
-        $mathML = new MathML($xml);
-        return $mathML->calculate($parameters);
-    }
-
     /**
      * @throws \Exception
      */
