@@ -1,11 +1,11 @@
 {
-  "name": "mercurysolutions/phpmathml",
-  "description": "A PHP MathML",
+  "name": "mercurysolutions/mathml",
+  "description": "A PHP MathML library for parsing and calculating Content MathML",
   "keywords": ["MathML"],
   "authors": [
     {
       "name": "Renaud Closset",
-      "email": "renaud@mercurysolutions.be"
+      "email": "renaud+packagist@mercurysolutions.be"
     }
   ],
   "license": "Apache-2.0",
