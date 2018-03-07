@@ -8,6 +8,7 @@
       "email": "renaud@mercurysolutions.be"
     }
   ],
+  "license": "Apache-2.0",
   "require": {
     "php": ">=7.1"
   },
