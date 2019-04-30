@@ -2,7 +2,7 @@
 
 namespace MercurySolutions\MathML\Exception;
 
-class UnknownContentIdentifierException extends Exception
+class UnknownContentIdentifierException extends MathMLException
 {
 
     public function __construct($contentIdentifier, $code = null, \Exception $previous = null)

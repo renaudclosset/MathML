@@ -2,11 +2,17 @@
 
 namespace MercurySolutions\MathML\Operator;
 
+use Closure;
+
+/**
+ * Class Operator
+ * @package MercurySolutions\MathML\Operator
+ */
 abstract class Operator implements IOperator
 {
 
     /**
-     * @var \Closure
+     * @var Closure
      */
     private $cachedClosure;
 
@@ -23,5 +29,5 @@ abstract class Operator implements IOperator
         return $closure($parameters);
     }
 
-    abstract protected function getClosure();
+    abstract protected function getClosure(): Closure;
 }

@@ -2,20 +2,23 @@
 
 namespace MercurySolutions\MathML;
 
-use MercurySolutions\MathML\Exception\Exception;
+use Closure;
+use Exception;
+use MercurySolutions\MathML\Exception\MathMLException;
 use MercurySolutions\MathML\Operator\IOperator;
 use MercurySolutions\MathML\Operator\Operator;
+use SimpleXMLElement;
 
 /**
- * The MathML class invoked with a mathML string to be calculated
- * @package MercurySolutions\MathMLBundle
+ * Class MathML
+ * @package MercurySolutions\MathML
  */
 class MathML extends Operator
 {
 
     /**
      * The SimpleXMLElement containing the MathML expression
-     * @var \SimpleXMLElement
+     * @var SimpleXMLElement
      */
     private $xml;
 
@@ -24,31 +27,31 @@ class MathML extends Operator
      */
     public function __construct($mathML)
     {
-        $this->xml = new \SimpleXMLElement($mathML);
+        $this->xml = new SimpleXMLElement($mathML);
     }
 
     /**
      * @param array $parameters The associate array containing the values of the <cn> nodes in the MathML expression
      * @return float
-     * @throws \DOMException
-     * @throws \Exception
+     * @throws MathMLException
+     * @throws Exception
      */
     public function calculate(array $parameters = array())
     {
         if ($this->xml->count() != 1) {
-            throw new \DOMException('MathML documentElement should only contain one childNode');
+            throw new MathMLException('MathML rootElement should only contain a single childNode');
         }
 
         return parent::calculate($parameters);
     }
 
     /**
-     * @param \SimpleXMLElement $element
-     * @return \Closure
+     * @param SimpleXMLElement $element
+     * @return Closure
+     * @throws MathMLException
      * @throws Exception
-     * @throws \Exception
      */
-    private function getElementClosure(\SimpleXMLElement $element)
+    private function getElementClosure(SimpleXMLElement $element)
     {
         $type = $element->getName();
         switch ($type) {
@@ -62,18 +65,18 @@ class MathML extends Operator
                 return $this->getApplyClosure($element);
 
             default:
-                throw new Exception("Unknown element {$type}.");
+                throw new MathMLException("Unknown element {$type}.");
         }
     }
 
     /**
-     * @param \SimpleXMLElement $apply
-     * @return \Closure
-     * @throws \Exception
+     * @param SimpleXMLElement $apply
+     * @return Closure
+     * @throws Exception
      */
-    private function getApplyClosure(\SimpleXMLElement $apply)
+    private function getApplyClosure(SimpleXMLElement $apply)
     {
-        /** @var \SimpleXMLElement[] $children */
+        /** @var SimpleXMLElement[] $children */
         $children = $apply->children();
         $operator = $children[0]->getName();
         $argumentClosures = array();
@@ -84,12 +87,12 @@ class MathML extends Operator
 
         $class = __NAMESPACE__ . "\\Operator\\Operator" . ucwords($operator);
         if (!class_exists($class)) {
-            throw new Exception("MathML operator '{$operator}' is unknown.");
+            throw new MathMLException("MathML operator '{$operator}' is unknown.");
         }
 
         $operatorInstance = new $class();
         if (!$operatorInstance instanceof IOperator) {
-            throw new Exception("MathML operator '{$operator}' should implement ".IOperator::class.".");
+            throw new MathMLException("MathML operator '{$operator}' should implement ".IOperator::class.".");
         }
 
         return function ($parameters) use ($operatorInstance, $argumentClosures) {
@@ -102,11 +105,11 @@ class MathML extends Operator
     }
 
     /**
-     * @param \SimpleXMLElement $ciElement
-     * @return \Closure
-     * @throws \Exception
+     * @param SimpleXMLElement $ciElement
+     * @return Closure
+     * @throws Exception
      */
-    private function getContentIdentifierClosure(\SimpleXMLElement $ciElement)
+    private function getContentIdentifierClosure(SimpleXMLElement $ciElement)
     {
         // get the parameter key
         $key = (string) $ciElement;
@@ -122,7 +125,7 @@ class MathML extends Operator
             }
 
             if (!is_float($value) && !is_integer($value)) {
-                throw new \Exception("Content Identifier '{$key}' is not numeric, '{$value}' given.");
+                throw new Exception("Content Identifier '{$key}' is not numeric, '{$value}' given.");
             }
 
             return (float) $value;
@@ -152,20 +155,20 @@ class MathML extends Operator
     }
 
     /**
-     * @param \SimpleXMLElement $cnElement
-     * @return \Closure
-     * @throws \Exception
+     * @param SimpleXMLElement $cnElement
+     * @return Closure
+     * @throws Exception
      */
-    private function getContentNumberClosure(\SimpleXMLElement $cnElement)
+    private function getContentNumberClosure(SimpleXMLElement $cnElement): Closure
     {
         $value = (string) $cnElement;
         if (strlen($value)===0) {
-            throw new \Exception("Content numbers cannot be empty");
+            throw new MathMLException("Content numbers cannot be empty");
         }
 
         $value = (float) $value;
         if (!is_numeric($value)) {
-            throw new \Exception("Content numbers must be numeric");
+            throw new MathMLException("Content numbers must be numeric");
         }
 
         return function () use ($value) {
@@ -174,10 +177,10 @@ class MathML extends Operator
     }
 
     /**
-     * @return \Closure
-     * @throws \Exception
+     * @return Closure
+     * @throws Exception
      */
-    protected function getClosure()
+    protected function getClosure(): Closure
     {
         $applyElement = $this->xml->apply[0];
         return $this->getApplyClosure($applyElement);
@@ -187,7 +190,7 @@ class MathML extends Operator
      * @param array $parameters
      * @return bool
      */
-    public function areParametersComplete(array $parameters)
+    public function areParametersComplete(array $parameters): bool
     {
         $cis = $this->xml->xpath('//ci');
         foreach ($cis as $ci) {

@@ -1,5 +1,7 @@
 <?php
 
+namespace MercurySolutions\MathML\Tests;
+
 use MercurySolutions\MathML\MathML;
 use PHPUnit\Framework\TestCase;
 
