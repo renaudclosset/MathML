@@ -1,6 +1,8 @@
 <?php
 
-namespace Operator;
+namespace MercurySolutions\MathML\Tests\Operator;
+
+use MercurySolutions\MathML\Operator\OperatorMean;
 
 /**
  * Class OperatorMeanTest
@@ -8,6 +10,11 @@ namespace Operator;
  */
 class OperatorMeanTest extends AbstractOperatorTest
 {
+
+    protected function setUp()
+    {
+        $this->createOperator(OperatorMean::class);
+    }
 
     /**
      * @throws \Exception
@@ -22,5 +29,17 @@ class OperatorMeanTest extends AbstractOperatorTest
         $result = $this->executeCalculation($xml, $parameters);
 
         $this->assertEquals(16, $result);
+    }
+
+    public function testNullParameters()
+    {
+        $actual = $this->operator->calculate([null, 1, 5]);
+        $this->assertEquals($actual, 3);
+
+        $actual = $this->operator->calculate([]);
+        $this->assertNull($actual);
+
+        $actual = $this->operator->calculate([null, null]);
+        $this->assertNull($actual);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Operator;
+namespace MercurySolutions\MathML\Tests\Operator;
 
 /**
  * Class OperatorPlusTest

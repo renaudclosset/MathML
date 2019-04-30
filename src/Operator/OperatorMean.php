@@ -2,13 +2,19 @@
 
 namespace MercurySolutions\MathML\Operator;
 
+use Closure;
+
+/**
+ * Class OperatorMean
+ * @package MercurySolutions\MathML\Operator
+ */
 class OperatorMean extends OperatorPlus
 {
 
     /**
-     * @return \Closure
+     * @return Closure
      */
-    protected function getClosure()
+    protected function getClosure(): Closure
     {
         return function (array $parameters) {
             $validParameters = array();
@@ -22,7 +28,7 @@ class OperatorMean extends OperatorPlus
 
             // no valid parameters?
             $count = count($validParameters);
-            if ($count == 0) {
+            if ($count === 0) {
                 return null;
             }
 

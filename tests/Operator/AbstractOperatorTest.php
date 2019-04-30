@@ -1,8 +1,9 @@
 <?php
 
-namespace Operator;
+namespace MercurySolutions\MathML\Tests\Operator;
 
 use MercurySolutions\MathML\MathML;
+use MercurySolutions\MathML\Operator\Operator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,6 +12,20 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class AbstractOperatorTest extends TestCase
 {
+
+    /**
+     * @var Operator
+     */
+    protected $operator;
+
+    /**
+     * @param string $operatorFQCN
+     */
+    protected function createOperator(string $operatorFQCN)
+    {
+        $this->operator = new $operatorFQCN();
+    }
+
     /**
      * @param $xml
      * @param $parameters
