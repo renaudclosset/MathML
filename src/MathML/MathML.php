@@ -2,13 +2,13 @@
 
 namespace MercurySolutions\MathML;
 
-use MercurySolutions\MathML\Exception\Exception;
+use MercurySolutions\MathML\Exception\MathMLException;
 use MercurySolutions\MathML\Operator\IOperator;
 use MercurySolutions\MathML\Operator\Operator;
 
 /**
- * The MathML class invoked with a mathML string to be calculated
- * @package MercurySolutions\MathMLBundle
+ * Class MathML
+ * @package MercurySolutions\MathML
  */
 class MathML extends Operator
 {
@@ -30,13 +30,13 @@ class MathML extends Operator
     /**
      * @param array $parameters The associate array containing the values of the <cn> nodes in the MathML expression
      * @return float
-     * @throws \DOMException
+     * @throws MathMLException
      * @throws \Exception
      */
     public function calculate(array $parameters = array())
     {
         if ($this->xml->count() != 1) {
-            throw new \DOMException('MathML documentElement should only contain one childNode');
+            throw new MathMLException('MathML rootElement should only contain a single childNode');
         }
 
         return parent::calculate($parameters);
@@ -45,7 +45,7 @@ class MathML extends Operator
     /**
      * @param \SimpleXMLElement $element
      * @return \Closure
-     * @throws Exception
+     * @throws MathMLException
      * @throws \Exception
      */
     private function getElementClosure(\SimpleXMLElement $element)
@@ -62,7 +62,7 @@ class MathML extends Operator
                 return $this->getApplyClosure($element);
 
             default:
-                throw new Exception("Unknown element {$type}.");
+                throw new MathMLException("Unknown element {$type}.");
         }
     }
 
@@ -84,12 +84,12 @@ class MathML extends Operator
 
         $class = __NAMESPACE__ . "\\Operator\\Operator" . ucwords($operator);
         if (!class_exists($class)) {
-            throw new Exception("MathML operator '{$operator}' is unknown.");
+            throw new MathMLException("MathML operator '{$operator}' is unknown.");
         }
 
         $operatorInstance = new $class();
         if (!$operatorInstance instanceof IOperator) {
-            throw new Exception("MathML operator '{$operator}' should implement ".IOperator::class.".");
+            throw new MathMLException("MathML operator '{$operator}' should implement ".IOperator::class.".");
         }
 
         return function ($parameters) use ($operatorInstance, $argumentClosures) {

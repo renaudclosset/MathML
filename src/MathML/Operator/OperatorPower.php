@@ -2,7 +2,7 @@
 
 namespace MercurySolutions\MathML\Operator;
 
-use MercurySolutions\MathML\Exception\Exception;
+use MercurySolutions\MathML\Exception\MathMLException;
 
 class OperatorPower extends Operator
 {
@@ -12,7 +12,7 @@ class OperatorPower extends Operator
         return function (array $parameters) {
             // validation
             if (count($parameters) !== 2) {
-                throw new Exception('Power operator requires 2 arguments, not ' . count($parameters));
+                throw new MathMLException('Power operator requires 2 arguments, not ' . count($parameters));
             }
             $p1 = array_shift($parameters);
             $p2 = array_shift($parameters);

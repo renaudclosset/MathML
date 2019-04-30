@@ -2,7 +2,7 @@
 
 namespace MercurySolutions\MathML\Exception;
 
-class ParameterCountException extends Exception
+class ParameterCountException extends MathMLException
 {
 
     public function __construct($operator, $actualParameterCount, $expectedParameterCount)

@@ -2,7 +2,7 @@
 
 namespace MercurySolutions\MathML\Operator;
 
-use MercurySolutions\MathML\Exception\Exception;
+use MercurySolutions\MathML\Exception\MathMLException;
 
 class OperatorMinus extends Operator
 {
@@ -14,7 +14,7 @@ class OperatorMinus extends Operator
     {
         return function (array $parameters) {
             if (count($parameters) !== 2) {
-                throw new Exception('Minus operator requires 2 arguments, not ' . count($parameters));
+                throw new MathMLException('Minus operator requires 2 arguments, not ' . count($parameters));
             }
             $result = null;
             $first = array_shift($parameters);
