@@ -25,7 +25,7 @@ class MathML extends Operator
     /**
      * @param string $mathML The MathML string to calculate
      */
-    public function __construct($mathML)
+    public function __construct(string $mathML)
     {
         $this->xml = new SimpleXMLElement($mathML);
     }

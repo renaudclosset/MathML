@@ -25,8 +25,11 @@ class OperatorDivide extends Operator
             }
 
             $result = array_shift($parameters);
-            while (!empty($parameters)) {
-                $parameter = (float) array_shift($parameters);
+            foreach ($parameters as $parameter) {
+                if ($parameter === null) {
+                    return null;
+                }
+                $parameter = (float) $parameter;
                 if ($parameter === 0.0) {
                     throw new DivisionByZeroException();
                 }

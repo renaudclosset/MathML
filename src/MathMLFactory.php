@@ -4,10 +4,12 @@ namespace MercurySolutions\MathML;
 
 class MathMLFactory
 {
-
-    public function create($xml)
+    /**
+     * @param $xml
+     * @return MathML
+     */
+    public function create($xml): MathML
     {
-        $mathML = new MathML($xml);
-        return $mathML;
+        return new MathML($xml);
     }
 }

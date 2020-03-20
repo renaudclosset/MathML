@@ -41,4 +41,9 @@ class OperatorDivideTest extends AbstractOperatorTest
         $this->expectException(ParameterCountException::class);
         $this->operator->calculate([1]);
     }
+
+    public function testNullParameterMustReturnNull()
+    {
+        $this->assertNull($this->operator->calculate([10, null]));
+    }
 }
